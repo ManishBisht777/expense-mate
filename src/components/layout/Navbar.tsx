@@ -21,7 +21,7 @@ const Navbar = ({ items, children }: Props) => {
       <Link href="/" className="hidden items-center space-x-2 md:flex">
         <Icons.logo />
         <span className="hidden text-lg font-bold sm:inline-block">
-          Tipsycode
+          Expense Mate
         </span>
       </Link>
       {items?.length ? (
