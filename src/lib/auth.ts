@@ -1,8 +1,11 @@
+import { db } from "@/db";
 import { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 
 export const authOptions: NextAuthOptions = {
+  adapter: DrizzleAdapter(db),
   session: {
     strategy: "jwt",
   },
@@ -19,4 +22,36 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
   ],
+
+  callbacks: {
+    async session({ token, session }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.image = token.picture;
+      }
+
+      return session;
+    },
+    async jwt({ token, user }) {
+      const result = await db.query.users.findFirst({
+        where: (users, { eq }) => eq(users.email, token.email || ""),
+      });
+
+      if (!result) {
+        if (user) {
+          token.id = user?.id;
+        }
+        return token;
+      }
+
+      return {
+        id: result.id,
+        name: result.name,
+        email: result.email,
+        picture: result.image,
+      };
+    },
+  },
 };
