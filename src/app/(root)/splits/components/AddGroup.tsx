@@ -1,6 +1,5 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DatePicker } from "@/components/ui/date-picker";
 import {
   Dialog,
   DialogContent,
@@ -10,15 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { Filter, IndianRupee } from "lucide-react";
+import { Filter } from "lucide-react";
 
 export default function AddGroup() {
   return (
@@ -28,7 +19,7 @@ export default function AddGroup() {
           <Filter className="w-4 h-4 mr-2" /> Add group
         </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-w-sm">
         <DialogHeader>
           <DialogTitle className="text-center text-lg">Add Group</DialogTitle>
         </DialogHeader>
@@ -39,7 +30,7 @@ export default function AddGroup() {
           </div>
           <div>
             <Label>Description</Label>
-            <Textarea placeholder="Group description" />
+            <Input placeholder="Group description" />
           </div>
           <div>
             <Label>Members</Label>
@@ -51,6 +42,7 @@ export default function AddGroup() {
             <Badge variant="outline">Bisht@gmail.com</Badge>
           </div>
         </div>
+        <Button className="w-full rounded-full mt-4">Add group</Button>
         {/* <div className="space-y-3">
           <div className="relative">
             <input
