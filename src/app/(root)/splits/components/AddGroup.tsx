@@ -1,6 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,24 +17,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { MultiSelect } from "@/components/ui/multiselect";
+import { createGroupSchema } from "@/types/group";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Filter } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
-
-const formSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  description: z.string(),
-  members: z.array(z.string()),
-  // members: z.string(),
-});
+import { z } from "zod";
 
 export default function AddGroup() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createGroupSchema>>({
+    resolver: zodResolver(createGroupSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -45,8 +37,18 @@ export default function AddGroup() {
   const [tags, setTags] = useState<string[]>([]);
   const { setValue } = form;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof createGroupSchema>) {
+    const response = await fetch(`/api/group`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: values.name,
+        description: values.description,
+        members: values.members,
+      }),
+    });
   }
 
   return (
@@ -61,7 +63,7 @@ export default function AddGroup() {
           <DialogTitle className="text-center text-lg">Add Group</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-3">
               <FormField
                 control={form.control}
@@ -113,7 +115,7 @@ export default function AddGroup() {
               />
             </div>
 
-            <Button type="submit" className="w-full rounded-full mt-4">
+            <Button type="submit" className="w-full rounded-full">
               Add group
             </Button>
           </form>
