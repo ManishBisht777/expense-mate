@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 
 export const authOptions: NextAuthOptions = {
+  //@ts-ignore
   adapter: DrizzleAdapter(db),
   session: {
     strategy: "jwt",
