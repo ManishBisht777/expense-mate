@@ -12,7 +12,7 @@ import {
 
 interface GroupOptionsProps {}
 
-export default function GroupOtions({}: GroupOptionsProps) {
+export default function GroupOptions({}: GroupOptionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="absolute top-4 right-4" asChild>

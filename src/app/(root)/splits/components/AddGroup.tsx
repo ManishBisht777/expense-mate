@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,11 +9,46 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { MultiSelect } from "@/components/ui/multiselect";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Filter } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const formSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  description: z.string(),
+  members: z.array(z.string()),
+  // members: z.string(),
+});
 
 export default function AddGroup() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  });
+
+  const [tags, setTags] = useState<string[]>([]);
+  const { setValue } = form;
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
+
   return (
     <Dialog>
       <DialogTrigger>
@@ -23,26 +60,64 @@ export default function AddGroup() {
         <DialogHeader>
           <DialogTitle className="text-center text-lg">Add Group</DialogTitle>
         </DialogHeader>
-        <div className="space-y-3">
-          <div>
-            <Label>Name</Label>
-            <Input placeholder="Group name" />
-          </div>
-          <div>
-            <Label>Description</Label>
-            <Input placeholder="Group description" />
-          </div>
-          <div>
-            <Label>Members</Label>
-            <Input placeholder="manishdev@gmail.com" />
-          </div>
-          <div className="flex gap-3 flex-wrap">
-            <Badge variant="secondary">ManishBishtdev@gmail.com</Badge>
-            <Badge>Dev@gmail.com</Badge>
-            <Badge variant="outline">Bisht@gmail.com</Badge>
-          </div>
-        </div>
-        <Button className="w-full rounded-full mt-4">Add group</Button>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="space-y-3">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Group name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Group description" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="members"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Members</FormLabel>
+                    <FormControl>
+                      <MultiSelect
+                        {...field}
+                        placeholder="Enter emails of members"
+                        tags={tags}
+                        setTags={(newTags) => {
+                          setTags(newTags);
+                          setValue("members", newTags as [string, ...string[]]);
+                        }}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <Button type="submit" className="w-full rounded-full mt-4">
+              Add group
+            </Button>
+          </form>
+        </Form>
         {/* <div className="space-y-3">
           <div className="relative">
             <input

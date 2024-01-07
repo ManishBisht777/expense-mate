@@ -58,3 +58,12 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   })
 );
+
+export const Groups = pgTable("group", {
+  id: text("id").notNull().primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  members: text("members")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+});

@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import GroupOtions from "./GroupOtions";
+import GroupOptions from "./GroupOptions";
 
 interface GroupProps {}
 
@@ -44,7 +44,7 @@ export default function Group({}: GroupProps) {
         <Button className="w-full">Add expense</Button>
       </CardFooter>
 
-      <GroupOtions />
+      <GroupOptions />
     </Card>
   );
 }
