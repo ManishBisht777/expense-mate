@@ -59,11 +59,17 @@ export const verificationTokens = pgTable(
   })
 );
 
+export const usersToGroups = pgTable("usersToGroup", {
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  groupId: text("groupId")
+    .notNull()
+    .references(() => groups.id, { onDelete: "cascade" }),
+});
+
 export const groups = pgTable("group", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
-  // members: text("members")
-  //   .notNull()
-  //   .references(() => users.id, { onDelete: "cascade" }),
 });
