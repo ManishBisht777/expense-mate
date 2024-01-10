@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { MultiSelect } from "@/components/ui/multiselect";
-import { createGroupSchema } from "@/types/group";
+import { createGroupSchema } from "@/types/split";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Filter } from "lucide-react";
 import { useState } from "react";

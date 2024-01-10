@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import GroupOptions from "./GroupOptions";
+import AddExpense from "./AddExpense";
 
 interface GroupProps {}
 
@@ -41,7 +42,7 @@ export default function Group({}: GroupProps) {
       </CardContent>
 
       <CardFooter>
-        <Button className="w-full">Add expense</Button>
+        <AddExpense />
       </CardFooter>
 
       <GroupOptions />
