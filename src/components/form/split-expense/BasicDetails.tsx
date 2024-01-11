@@ -51,7 +51,7 @@ export default function BasicDetails({ form }: BasicDetailsProps) {
       />
       <div className="relative">
         <input
-          className="text-7xl w-full text-center font-medium focus:outline-none"
+          className="text-6xl w-full text-center font-medium focus:outline-none"
           defaultValue="0.00"
         />
         <IndianRupee className="absolute top-0 right-0 text-muted-foreground font-medium" />

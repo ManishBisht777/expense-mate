@@ -1,6 +1,7 @@
 "use client";
 
 import BasicDetails from "@/components/form/split-expense/BasicDetails";
+import MemberSplit from "@/components/form/split-expense/MemberSplit";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -51,19 +52,19 @@ export default function AddExpense({}: AddExpenseProps) {
             {currentStep !== 0 && (
               <Button
                 variant="outline"
+                size="icon"
                 onClick={() => setCurrentStep(currentStep - 1)}
+                className="absolute top-5 left-5"
               >
-                <ChevronLeft className="mr-2 w-4 h-4" /> Back
+                <ChevronLeft className="w-4 h-4" />
               </Button>
             )}
 
             {currentStep === 0 && <BasicDetails form={form} />}
 
-            {currentStep === 1 && <h1>Form 2</h1>}
+            {currentStep === 1 && <MemberSplit form={form} />}
 
-            {currentStep === 2 && <h1>Form 3</h1>}
-
-            {currentStep !== 2 ? (
+            {currentStep !== 1 ? (
               <div className="w-full flex justify-end">
                 <Button
                   type="button"
