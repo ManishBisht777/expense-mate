@@ -4,6 +4,8 @@ import {
   text,
   primaryKey,
   integer,
+  serial,
+  boolean,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
 
@@ -72,4 +74,30 @@ export const groups = pgTable("group", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
+});
+
+export const userToExpense = pgTable("userToExpense", {
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expenseId: text("expenseId")
+    .notNull()
+    .references(() => expense.id, { onDelete: "cascade" }),
+  amount: integer("amount").notNull(),
+
+  settled: boolean("settled").notNull(),
+});
+
+export const expense = pgTable("expense", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  amount: integer("amount").notNull(),
+  description: text("description"),
+  groupId: text("groupId")
+    .notNull()
+    .references(() => groups.id, { onDelete: "cascade" }),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  splitType: text("splitType"),
 });
