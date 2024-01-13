@@ -3,8 +3,22 @@ import { Separator } from "@/components/ui/separator";
 import { Filter } from "lucide-react";
 import Group from "./components/Group";
 import AddGroup from "./components/AddGroup";
+import { db } from "@/db";
+import { eq } from "drizzle-orm";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-export default function page() {
+export default async function page() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) return null;
+
+  const allGroups = await db.query.groups.findMany({
+    where: (group, { eq }) => eq(group.createdBy, session?.user.id),
+  });
+
+  console.log(allGroups);
+
   return (
     <>
       <div className="space-y-1 flex justify-between items-center">
@@ -37,13 +51,9 @@ export default function page() {
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        <Group />
-        <Group />
-        <Group />
-        <Group />
-        <Group />
-        <Group />
-        <Group />
+        {allGroups.map((group) => (
+          <Group key={group.id} group={group} session={session} />
+        ))}
       </div>
     </>
   );

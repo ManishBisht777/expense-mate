@@ -15,28 +15,36 @@ import { splitType } from "@/enums/split";
 import { createGroupExpenseSchema } from "@/types/split";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Session } from "next-auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-interface AddExpenseProps {}
+interface AddExpenseProps {
+  groupId: string;
+  session: Session;
+}
 
-export default function AddExpense({}: AddExpenseProps) {
+export default function AddExpense({ groupId, session }: AddExpenseProps) {
+  const [currentStep, setCurrentStep] = useState(0);
   const form = useForm<z.infer<typeof createGroupExpenseSchema>>({
     resolver: zodResolver(createGroupExpenseSchema),
     defaultValues: {
       name: "",
       description: "",
-      amount: 0,
-      date: "",
-      currency: "",
-      groupId: "",
+      amount: "0",
+      date: new Date(),
+      currency: "Rupee",
+      groupId: groupId,
       split: splitType.EQUAL,
-      splitColumn: [],
+      createdBy: session.user.id,
+      // splitColumn: [],
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const onSubmit = (data: z.infer<typeof createGroupExpenseSchema>) => {
+    console.log(data);
+  };
 
   return (
     <Dialog>
@@ -48,7 +56,7 @@ export default function AddExpense({}: AddExpenseProps) {
           <DialogTitle className="text-center text-lg">Add Group</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {currentStep !== 0 && (
               <Button
                 variant="outline"

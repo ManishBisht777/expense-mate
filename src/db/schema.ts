@@ -74,6 +74,9 @@ export const groups = pgTable("group", {
   id: text("id").notNull().primaryKey(),
   name: text("name").notNull(),
   description: text("description"),
+  createdBy: text("userId")
+    .notNull()
+    .references(() => users.id),
 });
 
 export const userToExpense = pgTable("userToExpense", {
@@ -89,10 +92,11 @@ export const userToExpense = pgTable("userToExpense", {
 });
 
 export const expense = pgTable("expense", {
-  id: serial("id").primaryKey(),
+  id: text("id").primaryKey(),
   name: text("name").notNull(),
   amount: integer("amount").notNull(),
   description: text("description"),
+  date: timestamp("date", { mode: "date" }).notNull(),
   groupId: text("groupId")
     .notNull()
     .references(() => groups.id, { onDelete: "cascade" }),

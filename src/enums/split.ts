@@ -1,5 +1,4 @@
 export enum splitType {
-  EQUAL = "EQUAL",
-  PERCENT = "PERCENT",
-  CUSTOM = "CUSTOM",
+  EQUAL = "equal",
+  CUSTOM = "custom",
 }

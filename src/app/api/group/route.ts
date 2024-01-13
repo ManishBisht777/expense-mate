@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const json = await req.json();
     const body = createGroupSchema.parse(json);
 
-    const { members } = body;
+    // const { members } = body;
     // let userIds = [];
 
     // members.forEach(async (email) => {
@@ -29,21 +29,22 @@ export async function POST(req: Request) {
     //   }
     // });
 
-    const group = await db
+    await db
       .insert(groups)
       .values({
         id: randomUUID(),
         name: body.name,
         description: body.description,
+        createdBy: session.user.id,
       })
       .returning({ insertedId: groups.id });
 
-    const values = members.map((email) => ({
-      userId: "482a0544-88ea-4af0-8af4-382bdfb477e5",
-      groupId: group[0].insertedId,
-    }));
+    // const values = members.map((email) => ({
+    //   userId: "482a0544-88ea-4af0-8af4-382bdfb477e5",
+    //   groupId: group[0].insertedId,
+    // }));
 
-    await db.insert(usersToGroups).values(values).execute();
+    // await db.insert(usersToGroups).values(values).execute();
 
     return new Response("Group created succesfully", { status: 200 });
   } catch (error) {

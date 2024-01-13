@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import {
   FormControl,
@@ -5,6 +6,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  useFormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -50,14 +52,31 @@ export default function BasicDetails({ form }: BasicDetailsProps) {
         )}
       />
       <div className="relative">
-        <input
-          className="text-6xl w-full text-center font-medium focus:outline-none"
-          defaultValue="0.00"
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <input
+                  className="text-6xl w-full text-center font-medium focus:outline-none"
+                  placeholder="0.00"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
+
         <IndianRupee className="absolute top-0 right-0 text-muted-foreground font-medium" />
       </div>
-      <DatePicker />
-      <Select>
+      <DatePicker form={form} />
+
+      {/* 
+  // TODO: Add categories in future
+*/}
+      {/* <Select>
         <SelectTrigger>
           <SelectValue placeholder="Category" />
         </SelectTrigger>
@@ -66,7 +85,14 @@ export default function BasicDetails({ form }: BasicDetailsProps) {
           <SelectItem value="dark">Dark</SelectItem>
           <SelectItem value="system">System</SelectItem>
         </SelectContent>
-      </Select>
+      </Select> */}
+
+      <Button type="button" onClick={() => console.log(form.formState.errors)}>
+        Log error
+      </Button>
+      <Button type="button" onClick={() => console.log(form.getValues())}>
+        Log values
+      </Button>
     </div>
   );
 }

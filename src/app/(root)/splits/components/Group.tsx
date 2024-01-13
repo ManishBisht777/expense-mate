@@ -1,23 +1,26 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import GroupOptions from "./GroupOptions";
+import { Session } from "next-auth";
 import AddExpense from "./AddExpense";
+import GroupOptions from "./GroupOptions";
 
-interface GroupProps {}
+// TODO: Add types
+interface GroupProps {
+  group: any;
+  session: Session;
+}
 
-export default function Group({}: GroupProps) {
+export default function Group({ group, session }: GroupProps) {
   return (
     <Card className="col-span-1 relative">
       <CardHeader>
-        <CardTitle className="text-lg">Banglore Mates</CardTitle>
+        <CardTitle className="text-lg capitalize">{group.name}</CardTitle>
       </CardHeader>
 
       <CardContent className="text-center space-y-2">
@@ -42,7 +45,7 @@ export default function Group({}: GroupProps) {
       </CardContent>
 
       <CardFooter>
-        <AddExpense />
+        <AddExpense groupId={group.id} session={session} />
       </CardFooter>
 
       <GroupOptions />
