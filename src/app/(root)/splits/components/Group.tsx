@@ -9,6 +9,9 @@ import { Separator } from "@/components/ui/separator";
 import { Session } from "next-auth";
 import AddExpense from "./AddExpense";
 import GroupOptions from "./GroupOptions";
+import { db } from "@/db";
+import { groups, users, usersToGroups } from "@/db/schema";
+import { eq, sql } from "drizzle-orm";
 
 interface Group {
   id: string;
@@ -18,13 +21,29 @@ interface Group {
   members: string;
 }
 
-// TODO: Add types
 interface GroupProps {
   group: Group;
   session: Session;
 }
 
-export default function Group({ group, session }: GroupProps) {
+const getGroupMembers = async (groupId: string) => {
+  const result = await db
+    .select({
+      users: sql<string[]>`array_agg(${(users.name, users.email, users.id)})`,
+    })
+    .from(groups)
+    .leftJoin(usersToGroups, eq(groups.id, usersToGroups.groupId))
+    .leftJoin(users, eq(usersToGroups.userId, users.id))
+    .where(eq(groups.id, groupId))
+    .groupBy(groups.id);
+  return result;
+};
+
+export default async function Group({ group, session }: GroupProps) {
+  // const members = await getGroupMembers(group.id);
+
+  // console.log(members);
+
   return (
     <Card className="col-span-1 relative">
       <CardHeader>

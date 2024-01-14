@@ -104,17 +104,9 @@ export const groupsRelations = relations(groups, ({ many }) => ({
 // # Schema Group end
 // # --------------------
 
-export const userToExpense = pgTable("userToExpense", {
-  userId: text("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  expenseId: text("expenseId")
-    .notNull()
-    .references(() => expense.id, { onDelete: "cascade" }),
-  amount: integer("amount").notNull(),
-
-  settled: boolean("settled").notNull(),
-});
+// # --------------------
+// # Schema Expense start
+// # --------------------
 
 export const expense = pgTable("expense", {
   id: text("id").primaryKey(),
@@ -130,3 +122,19 @@ export const expense = pgTable("expense", {
     .references(() => users.id, { onDelete: "cascade" }),
   splitType: text("splitType"),
 });
+
+export const userToExpense = pgTable("userToExpense", {
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  expenseId: text("expenseId")
+    .notNull()
+    .references(() => expense.id, { onDelete: "cascade" }),
+  amount: integer("amount").notNull(),
+
+  settled: boolean("settled").notNull(),
+});
+
+// # --------------------
+// # Schema Expense end
+// # --------------------

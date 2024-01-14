@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import {
   FormControl,
@@ -6,16 +5,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  useFormField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { IndianRupee } from "lucide-react";
 
 interface BasicDetailsProps {
@@ -86,13 +77,6 @@ export default function BasicDetails({ form }: BasicDetailsProps) {
           <SelectItem value="system">System</SelectItem>
         </SelectContent>
       </Select> */}
-
-      <Button type="button" onClick={() => console.log(form.formState.errors)}>
-        Log error
-      </Button>
-      <Button type="button" onClick={() => console.log(form.getValues())}>
-        Log values
-      </Button>
     </div>
   );
 }

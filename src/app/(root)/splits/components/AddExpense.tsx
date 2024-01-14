@@ -1,5 +1,6 @@
 "use client";
 
+import Logger from "@/components/form/Logger";
 import BasicDetails from "@/components/form/split-expense/BasicDetails";
 import MemberSplit from "@/components/form/split-expense/MemberSplit";
 import { Button } from "@/components/ui/button";
@@ -53,7 +54,7 @@ export default function AddExpense({ groupId, session }: AddExpenseProps) {
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
-          <DialogTitle className="text-center text-lg">Add Group</DialogTitle>
+          <DialogTitle className="text-center text-lg">Add Expense</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -71,6 +72,8 @@ export default function AddExpense({ groupId, session }: AddExpenseProps) {
             {currentStep === 0 && <BasicDetails form={form} />}
 
             {currentStep === 1 && <MemberSplit form={form} />}
+
+            <Logger form={form} />
 
             {currentStep !== 1 ? (
               <div className="w-full flex justify-end">
