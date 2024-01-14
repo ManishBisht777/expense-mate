@@ -34,10 +34,6 @@ export async function GET(
       .where(eq(groups.id, params.groupId))
       .groupBy(groups.id);
 
-    console.log(result);
-
-    console.log(params.groupId);
-
     return new Response(JSON.stringify(result), { status: 200 });
   } catch (error) {
     return new Response(null, { status: 500 });

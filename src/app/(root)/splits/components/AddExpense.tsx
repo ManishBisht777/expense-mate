@@ -39,7 +39,7 @@ export default function AddExpense({ groupId, session }: AddExpenseProps) {
       groupId: groupId,
       split: splitType.EQUAL,
       createdBy: session.user.id,
-      // splitColumn: [],
+      splitColumn: [],
     },
   });
 

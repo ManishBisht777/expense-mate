@@ -15,14 +15,14 @@ export const createGroupExpenseSchema = z.object({
   groupId: z.string().min(1, "Group is required"),
   createdBy: z.string().min(1, "Created by is required"),
   split: z.string().min(1, "Split is required"),
-  // splitColumn: z.array(
-  //   z.object({
-  //     userId: z.string().min(1, "User is required"),
-  //     splitAmount: z
-  //       .number()
-  //       .positive()
-  //       .min(0.01, "Amount must be greater than 0"),
-  //     isSettled: z.boolean(),
-  //   })
-  // ),
+  splitColumn: z.array(
+    z.object({
+      email: z.string().email(),
+      emailVerified: z.nullable(z.boolean()),
+      id: z.string(),
+      image: z.string().url(),
+      name: z.string(),
+      split: z.number(),
+    })
+  ),
 });
