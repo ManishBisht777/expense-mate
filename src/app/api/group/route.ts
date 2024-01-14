@@ -16,20 +16,26 @@ export async function POST(req: Request) {
     const json = await req.json();
     const body = createGroupSchema.parse(json);
 
-    // const { members } = body;
-    // let userIds = [];
+    const { members } = body;
 
-    // members.forEach(async (email) => {
-    //   const user = await db.query.users.findFirst({
-    //     where: (member, { eq }) => eq(member.email, email),
-    //   });
-    //   if (user) userIds.push(user.id);
-    //   else {
-    //     //send email to user to join the group
-    //   }
-    // });
+    console.log(members);
+    let userIds: string[] = [];
 
-    await db
+    const userPromises = members.map(async (email) => {
+      const user = await db.query.users.findFirst({
+        where: (member, { eq }) => eq(member.email, email),
+      });
+      if (user) {
+        userIds.push(user.id);
+      } else {
+        //send email to user to join the group
+      }
+    });
+
+    // Wait for all promises to resolve
+    await Promise.all(userPromises);
+
+    const group = await db
       .insert(groups)
       .values({
         id: randomUUID(),
@@ -39,12 +45,12 @@ export async function POST(req: Request) {
       })
       .returning({ insertedId: groups.id });
 
-    // const values = members.map((email) => ({
-    //   userId: "482a0544-88ea-4af0-8af4-382bdfb477e5",
-    //   groupId: group[0].insertedId,
-    // }));
+    const values = userIds.map((userId) => ({
+      userId: userId,
+      groupId: group[0].insertedId,
+    }));
 
-    // await db.insert(usersToGroups).values(values).execute();
+    await db.insert(usersToGroups).values(values).execute();
 
     return new Response("Group created succesfully", { status: 200 });
   } catch (error) {

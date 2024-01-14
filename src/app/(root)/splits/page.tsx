@@ -4,20 +4,29 @@ import { Filter } from "lucide-react";
 import Group from "./components/Group";
 import AddGroup from "./components/AddGroup";
 import { db } from "@/db";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { groups, users, usersToGroups } from "@/db/schema";
 
 export default async function page() {
   const session = await getServerSession(authOptions);
 
   if (!session) return null;
 
-  const allGroups = await db.query.groups.findMany({
-    where: (group, { eq }) => eq(group.createdBy, session?.user.id),
-  });
-
-  console.log(allGroups);
+  const allGroups = await db
+    .select({
+      id: groups.id,
+      name: groups.name,
+      description: groups.description,
+      createdBy: groups.createdBy,
+      members: sql<string>`array_agg(${users.email})`,
+    })
+    .from(groups)
+    .leftJoin(usersToGroups, eq(groups.id, usersToGroups.groupId))
+    .leftJoin(users, eq(usersToGroups.userId, users.id))
+    .where(eq(groups.createdBy, session.user.id))
+    .groupBy(groups.id);
 
   return (
     <>

@@ -8,6 +8,7 @@ import {
   boolean,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccount } from "@auth/core/adapters";
+import { relations } from "drizzle-orm";
 
 export const users = pgTable("user", {
   id: text("id").notNull().primaryKey(),
@@ -61,14 +62,9 @@ export const verificationTokens = pgTable(
   })
 );
 
-export const usersToGroups = pgTable("usersToGroup", {
-  userId: text("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  groupId: text("groupId")
-    .notNull()
-    .references(() => groups.id, { onDelete: "cascade" }),
-});
+// # --------------------
+// # Schema Group start
+// # --------------------
 
 export const groups = pgTable("group", {
   id: text("id").notNull().primaryKey(),
@@ -78,6 +74,35 @@ export const groups = pgTable("group", {
     .notNull()
     .references(() => users.id),
 });
+
+// users_to_groups join table
+export const usersToGroups = pgTable(
+  "usersToGroup",
+  {
+    userId: text("userId")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    groupId: text("groupId")
+      .notNull()
+      .references(() => groups.id, { onDelete: "cascade" }),
+  },
+  (t) => ({
+    pk: primaryKey({ columns: [t.userId, t.groupId] }),
+  })
+);
+
+// Setup relations
+export const usersRelations = relations(users, ({ many }) => ({
+  usersToGroups: many(usersToGroups),
+}));
+
+export const groupsRelations = relations(groups, ({ many }) => ({
+  usersToGroups: many(usersToGroups),
+}));
+
+// # --------------------
+// # Schema Group end
+// # --------------------
 
 export const userToExpense = pgTable("userToExpense", {
   userId: text("userId")

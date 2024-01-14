@@ -20,10 +20,12 @@ import { Input } from "@/components/ui/input";
 import { MultiSelect } from "@/components/ui/multiselect";
 import { createGroupSchema } from "@/types/split";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Filter } from "lucide-react";
+import { Filter, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { toast } from "sonner";
 
 export default function AddGroup() {
   const form = useForm<z.infer<typeof createGroupSchema>>({
@@ -33,8 +35,10 @@ export default function AddGroup() {
       description: "",
     },
   });
+  const router = useRouter();
 
   const [tags, setTags] = useState<string[]>([]);
+  const [open, setOpen] = useState(false);
   const { setValue } = form;
 
   async function onSubmit(values: z.infer<typeof createGroupSchema>) {
@@ -49,12 +53,22 @@ export default function AddGroup() {
         members: values.members,
       }),
     });
+
+    if (response.ok) {
+      toast.success("Group added successfully");
+      form.reset();
+      setTags([]);
+      setOpen(false);
+      router.refresh();
+    } else {
+      toast.error("Something went wrong");
+    }
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button variant="outline">
+        <Button onClick={() => setOpen(true)} variant="outline">
           <Filter className="w-4 h-4 mr-2" /> Add group
         </Button>
       </DialogTrigger>
@@ -115,7 +129,13 @@ export default function AddGroup() {
               />
             </div>
 
-            <Button type="submit" className="w-full rounded-full">
+            <Button
+              type="submit"
+              className="w-full flex justify-center rounded-full"
+            >
+              {form.formState.isSubmitting && (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              )}
               Add group
             </Button>
           </form>

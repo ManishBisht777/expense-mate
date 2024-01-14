@@ -10,9 +10,17 @@ import { Session } from "next-auth";
 import AddExpense from "./AddExpense";
 import GroupOptions from "./GroupOptions";
 
+interface Group {
+  id: string;
+  name: string;
+  description: string | null;
+  createdBy: string;
+  members: string;
+}
+
 // TODO: Add types
 interface GroupProps {
-  group: any;
+  group: Group;
   session: Session;
 }
 
@@ -28,7 +36,7 @@ export default function Group({ group, session }: GroupProps) {
         <Separator />
         <div className="flex justify-center gap-4 text-sm">
           <div>
-            <p>4</p>
+            <p>{group.members.length}</p>
             <p className="text-muted-foreground">Members</p>
           </div>
           <Separator orientation="vertical" className="h-10" />

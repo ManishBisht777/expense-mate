@@ -50,6 +50,13 @@
       "when": 1705144163533,
       "tag": "0006_pink_maginty",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1705245220669,
+      "tag": "0007_fixed_leper_queen",
+      "breakpoints": true
     }
   ]
 }
