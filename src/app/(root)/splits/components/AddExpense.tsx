@@ -19,6 +19,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Session } from "next-auth";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
 interface AddExpenseProps {
@@ -28,6 +29,8 @@ interface AddExpenseProps {
 
 export default function AddExpense({ groupId, session }: AddExpenseProps) {
   const [currentStep, setCurrentStep] = useState(0);
+  const [open, setOpen] = useState(false);
+
   const form = useForm<z.infer<typeof createGroupExpenseSchema>>({
     resolver: zodResolver(createGroupExpenseSchema),
     defaultValues: {
@@ -43,12 +46,25 @@ export default function AddExpense({ groupId, session }: AddExpenseProps) {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof createGroupExpenseSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof createGroupExpenseSchema>) => {
+    const response = await fetch("/api/group/expense", {
+      body: JSON.stringify(data),
+      method: "POST",
+    });
+
+    if (response.ok) {
+      form.reset();
+      toast.success("Expense added successfully");
+      setOpen(false);
+    } else {
+      toast.error("Something went wrong");
+      form.reset();
+      setCurrentStep(0);
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="w-full">
         <Button className="w-full">Add expense</Button>
       </DialogTrigger>

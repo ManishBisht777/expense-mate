@@ -1,10 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { splitType } from "@/enums/split";
-import { isValidSplitColumn } from "@/lib/utils/addExpense";
 import { UserSchema, splitColumnSchema } from "@/types/schema";
 import { Equal, EqualNot } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -107,7 +105,6 @@ export default function MemberSplit({ form }: MemberSplitProps) {
                             split: e.target.value,
                           };
                         }
-
                         return member;
                       });
 

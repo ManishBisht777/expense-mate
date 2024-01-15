@@ -2,7 +2,6 @@ import { db } from "@/db";
 import { groups, usersToGroups } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
 import { createGroupSchema } from "@/types/split";
-import { group } from "console";
 import { randomUUID } from "crypto";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
