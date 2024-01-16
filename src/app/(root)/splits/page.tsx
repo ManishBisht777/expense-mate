@@ -7,7 +7,7 @@ import { db } from "@/db";
 import { eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { groups, users, usersToGroups } from "@/db/schema";
+import { expenses, groups, users, usersToGroups } from "@/db/schema";
 
 export default async function page() {
   const session = await getServerSession(authOptions);
@@ -21,10 +21,13 @@ export default async function page() {
       description: groups.description,
       createdBy: groups.createdBy,
       members: sql<string>`array_agg(${users.email})`,
+      expensesCount: sql<number>`count(${expenses.id})`.as("expenses_count"),
+      expensesSum: sql<number>`sum(${expenses.amount})`.as("expenses_sum"),
     })
     .from(groups)
     .leftJoin(usersToGroups, eq(groups.id, usersToGroups.groupId))
     .leftJoin(users, eq(usersToGroups.userId, users.id))
+    .leftJoin(expenses, eq(groups.id, expenses.groupId))
     .where(eq(groups.createdBy, session.user.id))
     .groupBy(groups.id);
 
@@ -37,9 +40,9 @@ export default async function page() {
             Effortlessly split expenses between people
           </p>
         </div>
-        <Button variant="outline">
+        <div>
           <Filter className="w-4 h-4 mr-2" /> Add group
-        </Button>
+        </div>
       </div>
       <Separator />
       <div className="flex gap-4">

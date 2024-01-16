@@ -12,6 +12,7 @@ import GroupOptions from "./GroupOptions";
 import { db } from "@/db";
 import { groups, users, usersToGroups } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
+import Link from "next/link";
 
 interface Group {
   id: string;
@@ -19,6 +20,8 @@ interface Group {
   description: string | null;
   createdBy: string;
   members: string;
+  expensesCount: number;
+  expensesSum: number;
 }
 
 interface GroupProps {
@@ -47,11 +50,13 @@ export default async function Group({ group, session }: GroupProps) {
   return (
     <Card className="col-span-1 relative">
       <CardHeader>
-        <CardTitle className="text-lg capitalize">{group.name}</CardTitle>
+        <Link className="cursor-pointer" href={`/group/${group.id}`}>
+          <CardTitle className="text-lg capitalize">{group.name}</CardTitle>
+        </Link>
       </CardHeader>
 
       <CardContent className="text-center space-y-2">
-        <p className="text-2xl font-semibold">25,500</p>
+        <p className="text-2xl font-semibold">{group.expensesSum || 0}</p>
         <Separator />
         <div className="flex justify-center gap-4 text-sm">
           <div>
@@ -60,7 +65,7 @@ export default async function Group({ group, session }: GroupProps) {
           </div>
           <Separator orientation="vertical" className="h-10" />
           <div>
-            <p>36</p>
+            <p>{group.expensesCount}</p>
             <p className="text-muted-foreground">Expenses</p>
           </div>
           <Separator orientation="vertical" className="h-10" />

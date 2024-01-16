@@ -17,6 +17,7 @@ import { createGroupExpenseSchema } from "@/types/split";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Session } from "next-auth";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -30,6 +31,7 @@ interface AddExpenseProps {
 export default function AddExpense({ groupId, session }: AddExpenseProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof createGroupExpenseSchema>>({
     resolver: zodResolver(createGroupExpenseSchema),
@@ -56,6 +58,7 @@ export default function AddExpense({ groupId, session }: AddExpenseProps) {
       form.reset();
       toast.success("Expense added successfully");
       setOpen(false);
+      router.refresh();
     } else {
       toast.error("Something went wrong");
       form.reset();
@@ -65,8 +68,11 @@ export default function AddExpense({ groupId, session }: AddExpenseProps) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="w-full">
-        <Button className="w-full">Add expense</Button>
+      <DialogTrigger
+        className="border px-4 py-2 rounded-md bg-black text-white w-full text-center cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
+        Add expense
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>

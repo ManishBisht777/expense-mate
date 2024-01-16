@@ -67,10 +67,11 @@ export default function AddGroup() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
-        <Button onClick={() => setOpen(true)} variant="outline">
-          <Filter className="w-4 h-4 mr-2" /> Add group
-        </Button>
+      <DialogTrigger
+        className="border px-4 py-2 rounded-md  flex items-center space-x-2 cursor-pointer"
+        onClick={() => setOpen(true)}
+      >
+        <Filter className="w-4 h-4" /> <p className="text-nowrap">Add group</p>
       </DialogTrigger>
       <DialogContent className="max-w-sm">
         <DialogHeader>
