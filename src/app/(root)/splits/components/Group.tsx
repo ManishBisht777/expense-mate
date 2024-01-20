@@ -80,7 +80,7 @@ export default async function Group({ group, session }: GroupProps) {
         <AddExpense groupId={group.id} session={session} />
       </CardFooter>
 
-      <GroupOptions />
+      <GroupOptions groupId={group.id} />
     </Card>
   );
 }

@@ -9,10 +9,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 
-interface GroupOptionsProps {}
+interface GroupOptionsProps {
+  groupId: string;
+}
 
-export default function GroupOptions({}: GroupOptionsProps) {
+export default function GroupOptions({ groupId }: GroupOptionsProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="absolute top-4 right-4" asChild>
@@ -29,8 +32,10 @@ export default function GroupOptions({}: GroupOptionsProps) {
             <span>Add members</span>
           </DropdownMenuItem>
           <DropdownMenuItem>
-            <PencilRuler className="w-4 h-4 mr-2" />
-            <span>Edit group</span>
+            <Link className="flex" href={`/group/${groupId}/edit`}>
+              <PencilRuler className="w-4 h-4 mr-2" />
+              <span>Edit group</span>
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Trash2 className="w-4 h-4 mr-2" />
