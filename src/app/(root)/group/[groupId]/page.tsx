@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getGroup } from "@/lib/actions/group";
+import { getGroupById, getGroupExpense } from "@/lib/actions/group";
 import SettleExpense from "../../splits/components/SettleExpense";
 
 interface Props {
@@ -7,10 +7,11 @@ interface Props {
 }
 
 export default async function page({ params: { groupId } }: Props) {
-  const group = await getGroup(groupId);
+  const group = await getGroupById(groupId);
   if (!group) return null;
 
-  console.log(group);
+  const expensesInGroup = await getGroupExpense(groupId);
+  if (!expensesInGroup) return null;
 
   return (
     <div>
@@ -18,32 +19,36 @@ export default async function page({ params: { groupId } }: Props) {
       <p>
         {group.expensesCount} Sum:{group.expensesSum}
       </p>
+
+      {/* <pre>
+        <code>{JSON.stringify(expensesInGroup, null, 2)}</code>
+      </pre> */}
+
       <Tabs defaultValue="expenses" className="w-[400px] mt-4">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="expenses">Expenses</TabsTrigger>
           <TabsTrigger value="users">Users</TabsTrigger>
         </TabsList>
         <TabsContent value="expenses">
-          {group.expenses.map((expense) => (
+          {expensesInGroup.map((expense) => (
             <div key={expense.id}>
-              <p>{expense.name}</p>
+              <h1 className="bg-blue-400">{expense.name}</h1>
+              {expense.users?.map((user) => {
+                return (
+                  <p key={user.id}>
+                    {user.name}
+                    <SettleExpense
+                      userId={user.id}
+                      expenseId={expense.id}
+                      isSettled={user.settled}
+                    />
+                  </p>
+                );
+              })}
             </div>
           ))}
         </TabsContent>
-        <TabsContent value="users">
-          <div>
-            {group.users.map((user) => (
-              <div key={user.email}>
-                <p>
-                  {user.email} settled: {user.settled ? "true" : "false"}
-                </p>
-              </div>
-            ))}
-          </div>
-        </TabsContent>
       </Tabs>
-
-      <div></div>
     </div>
   );
 }

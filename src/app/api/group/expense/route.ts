@@ -29,16 +29,15 @@ export async function POST(req: Request) {
       })
       .returning({ insertedId: expenses.id });
 
-    const splitColumnPromises = splitColumn.map(async (member) => {
-      db.insert(userToExpense).values({
-        userId: member.id,
-        amount: member.split,
-        expenseId: expense[0].insertedId,
-        settled: false,
-      });
-    });
+    const values = splitColumn.map((split) => ({
+      userId: split.id,
+      amount: split.split,
+      expenseId: expense[0].insertedId,
+      settled: false,
+    }));
 
-    await Promise.all(splitColumnPromises);
+    await db.insert(userToExpense).values(values).execute();
+
     return new Response("Expense added succesfully", { status: 200 });
   } catch (error) {
     console.log(error);
