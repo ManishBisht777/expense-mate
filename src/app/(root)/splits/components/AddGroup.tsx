@@ -22,7 +22,7 @@ export default function AddGroup() {
       >
         <Filter className="w-4 h-4" /> <p className="text-nowrap">Add group</p>
       </DialogTrigger>
-      <DialogContent className="max-w-sm">
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-lg">Add Group</DialogTitle>
         </DialogHeader>

@@ -15,12 +15,13 @@ import Link from "next/link";
 import { useState } from "react";
 import DeleteGroup from "./DeleteGroup";
 import EditGroup from "./EditGroup";
+import { Group } from "./Group";
 
 interface GroupOptionsProps {
-  groupId: string;
+  group: Group;
 }
 
-export default function GroupOptions({ groupId }: GroupOptionsProps) {
+export default function GroupOptions({ group }: GroupOptionsProps) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
@@ -28,13 +29,13 @@ export default function GroupOptions({ groupId }: GroupOptionsProps) {
   return (
     <>
       <DeleteGroup
-        groupId={groupId}
+        groupId={group.id}
         setShowDeleteModal={setShowDeleteModal}
         showDeleteModal={showDeleteModal}
       />
 
       <EditGroup
-        groupId={groupId}
+        group={group}
         setShowEditModal={setShowEditModal}
         showEditModal={showEditModal}
       />

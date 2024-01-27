@@ -14,12 +14,12 @@ import Link from "next/link";
 import AddExpense from "./AddExpense";
 import GroupOptions from "./GroupOptions";
 
-interface Group {
+export interface Group {
   id: string;
   name: string;
   description: string | null;
   createdBy: string;
-  members: string;
+  members: string[];
   expensesCount: number;
   expensesSum: number;
 }
@@ -28,19 +28,6 @@ interface GroupProps {
   group: Group;
   session: Session;
 }
-
-const getGroupMembers = async (groupId: string) => {
-  const result = await db
-    .select({
-      users: sql<string[]>`array_agg(${(users.name, users.email, users.id)})`,
-    })
-    .from(groups)
-    .leftJoin(usersToGroups, eq(groups.id, usersToGroups.groupId))
-    .leftJoin(users, eq(usersToGroups.userId, users.id))
-    .where(eq(groups.id, groupId))
-    .groupBy(groups.id);
-  return result;
-};
 
 export default async function Group({ group, session }: GroupProps) {
   // const members = await getGroupMembers(group.id);
@@ -80,7 +67,7 @@ export default async function Group({ group, session }: GroupProps) {
         <AddExpense groupId={group.id} session={session} />
       </CardFooter>
 
-      <GroupOptions groupId={group.id} />
+      <GroupOptions group={group} />
     </Card>
   );
 }

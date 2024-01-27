@@ -8,28 +8,14 @@ import { eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { expenses, groups, users, usersToGroups } from "@/db/schema";
+import { getAllGroups } from "@/lib/actions/group";
 
 export default async function page() {
   const session = await getServerSession(authOptions);
 
   if (!session) return null;
 
-  const allGroups = await db
-    .select({
-      id: groups.id,
-      name: groups.name,
-      description: groups.description,
-      createdBy: groups.createdBy,
-      members: sql<string>`array_agg(${users.email})`,
-      expensesCount: sql<number>`count(${expenses.id})`.as("expenses_count"),
-      expensesSum: sql<number>`sum(${expenses.amount})`.as("expenses_sum"),
-    })
-    .from(groups)
-    .leftJoin(usersToGroups, eq(groups.id, usersToGroups.groupId))
-    .leftJoin(users, eq(usersToGroups.userId, users.id))
-    .leftJoin(expenses, eq(groups.id, expenses.groupId))
-    .where(eq(groups.createdBy, session.user.id))
-    .groupBy(groups.id);
+  const allGroups = await getAllGroups();
 
   return (
     <>
@@ -63,9 +49,13 @@ export default async function page() {
       </div>
 
       <div className="grid grid-cols-4 gap-4">
-        {allGroups.map((group) => (
-          <Group key={group.id} group={group} session={session} />
-        ))}
+        {allGroups ? (
+          allGroups.map((group) => (
+            <Group key={group.id} group={group} session={session} />
+          ))
+        ) : (
+          <div>No grps create plx</div>
+        )}
       </div>
     </>
   );

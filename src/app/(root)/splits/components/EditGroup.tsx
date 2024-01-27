@@ -1,5 +1,6 @@
 "use client";
 
+import AddEditGroupForm from "@/components/form/group/AddEditGroupForm";
 import {
   Dialog,
   DialogContent,
@@ -8,32 +9,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
-import { deleteGroup } from "@/lib/actions/group";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { Group } from "./Group";
 
 interface EditGroupProps {
-  groupId: string;
+  group: Group;
   showEditModal: boolean;
   setShowEditModal: (show: boolean) => void;
 }
 
 export default function EditGroup({
-  groupId,
+  group,
   setShowEditModal,
   showEditModal,
 }: EditGroupProps) {
-  const router = useRouter();
-
-  const handleEditGroup = async (groupId: string) => {
-    const response = await deleteGroup(groupId);
-
-    if (response) {
-      toast.success("Group deleted successfully");
-      router.refresh();
-    } else toast.error("Something went wrong");
-  };
-
   return (
     <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
       <DialogContent>
@@ -44,6 +32,8 @@ export default function EditGroup({
             account and remove your data from our servers.
           </DialogDescription>
         </DialogHeader>
+        {/* @ts-ignore */}
+        <AddEditGroupForm setOpen={setShowEditModal} initialValues={group} />
       </DialogContent>
     </Dialog>
   );

@@ -12,6 +12,30 @@ import { authOptions } from "@/lib/auth";
 import { eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 
+export const getAllGroups = async () => {
+  const session = await getServerSession(authOptions);
+  if (!session) return null;
+
+  const allGroups = await db
+    .select({
+      id: groups.id,
+      name: groups.name,
+      description: groups.description,
+      createdBy: groups.createdBy,
+      members: sql<string[]>`array_agg(DISTINCT ${users.email})`,
+      expensesCount: sql<number>`count(${expenses.id})`.as("expenses_count"),
+      expensesSum: sql<number>`sum(${expenses.amount})`.as("expenses_sum"),
+    })
+    .from(groups)
+    .leftJoin(usersToGroups, eq(groups.id, usersToGroups.groupId))
+    .leftJoin(users, eq(usersToGroups.userId, users.id))
+    .leftJoin(expenses, eq(groups.id, expenses.groupId))
+    .where(eq(groups.createdBy, session.user.id))
+    .groupBy(groups.id);
+
+  return allGroups;
+};
+
 export const getGroup = async (groupId: string) => {
   const session = await getServerSession(authOptions);
   if (!session) return null;

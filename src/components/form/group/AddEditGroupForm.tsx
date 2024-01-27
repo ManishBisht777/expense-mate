@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { createGroupSchema } from "@/types/split";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
@@ -22,20 +22,40 @@ import { Loader2 } from "lucide-react";
 
 interface AddEditGroupFormProps {
   setOpen: (open: boolean) => void;
+  initialValues?: z.infer<typeof createGroupSchema>;
 }
 
-export default function AddEditGroupForm({ setOpen }: AddEditGroupFormProps) {
+export default function AddEditGroupForm({
+  setOpen,
+  initialValues,
+}: AddEditGroupFormProps) {
+  const [tags, setTags] = useState<string[]>([]);
+
+  const defaultValues = initialValues
+    ? {
+        name: initialValues.name,
+        description: initialValues.description,
+        members: initialValues.members,
+      }
+    : {
+        name: "",
+        description: "",
+        members: [],
+      };
+
   const form = useForm<z.infer<typeof createGroupSchema>>({
     resolver: zodResolver(createGroupSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-    },
+    defaultValues: defaultValues,
   });
 
   const router = useRouter();
-  const { setValue } = form;
-  const [tags, setTags] = useState<string[]>([]);
+  const { setValue, getValues } = form;
+
+  useEffect(() => {
+    if (initialValues) {
+      setTags(initialValues.members);
+    }
+  }, [initialValues]);
 
   async function onSubmit(values: z.infer<typeof createGroupSchema>) {
     const response = await fetch(`/api/group`, {
