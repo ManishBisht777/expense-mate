@@ -1,3 +1,5 @@
+"use client";
+
 import { Landmark, MoreVertical, PencilRuler, Trash2 } from "lucide-react";
 
 import {
@@ -10,39 +12,53 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { useState } from "react";
+import DeleteGroup from "./DeleteGroup";
 
 interface GroupOptionsProps {
   groupId: string;
 }
 
 export default function GroupOptions({ groupId }: GroupOptionsProps) {
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showAddMemberModal, setShowAddMemberModal] = useState(false);
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="absolute top-4 right-4" asChild>
-        <div className="p-1 rounded-md hover:bg-muted-foreground/10 cursor-pointer">
-          <MoreVertical className="w-4 h-4 " />
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Banglore Mates</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <Landmark className="w-4 h-4 mr-2" />
-            <span>Add members</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link className="flex" href={`/group/${groupId}/edit`}>
-              <PencilRuler className="w-4 h-4 mr-2" />
-              <span>Edit group</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Trash2 className="w-4 h-4 mr-2" />
-            <span>Delete group</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <DeleteGroup
+        groupId={groupId}
+        setShowDeleteModal={setShowDeleteModal}
+        showDeleteModal={showDeleteModal}
+      />
+
+      <DropdownMenu>
+        <DropdownMenuTrigger className="absolute top-4 right-4" asChild>
+          <div className="p-1 rounded-md hover:bg-muted-foreground/10 cursor-pointer">
+            <MoreVertical className="w-4 h-4 " />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="w-56">
+          <DropdownMenuLabel>Banglore Mates</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuGroup>
+            <DropdownMenuItem>
+              <Landmark className="w-4 h-4 mr-2" />
+              <span>Add members</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link className="flex" href={`/group/${groupId}/edit`}>
+                <PencilRuler className="w-4 h-4 mr-2" />
+                <span>Edit group</span>
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setShowDeleteModal(true)}>
+              <Trash2 className="w-4 h-4 mr-2" />
+              <span>Delete group</span>
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 }

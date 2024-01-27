@@ -6,13 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Session } from "next-auth";
-import AddExpense from "./AddExpense";
-import GroupOptions from "./GroupOptions";
 import { db } from "@/db";
 import { groups, users, usersToGroups } from "@/db/schema";
 import { eq, sql } from "drizzle-orm";
+import { Session } from "next-auth";
 import Link from "next/link";
+import AddExpense from "./AddExpense";
+import GroupOptions from "./GroupOptions";
 
 interface Group {
   id: string;

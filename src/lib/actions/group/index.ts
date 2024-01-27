@@ -1,3 +1,5 @@
+"use server";
+
 import { db } from "@/db";
 import {
   expenses,
@@ -98,17 +100,11 @@ export const getGroupExpense = async (groupId: string) => {
   return groupExpense;
 };
 
-export const getUsersInExpense = async (expenseId: string) => {
-  const usersInExpense = await db
-    .select({
-      userId: userToExpense.userId,
-      expenseId: userToExpense.expenseId,
-      settled: userToExpense.settled,
-      email: users.email,
-      name: users.name,
-    })
-    .from(userToExpense)
-    .leftJoin(users, eq(userToExpense.userId, users.id))
-    .where(eq(userToExpense.expenseId, expenseId));
-  return usersInExpense;
+export const deleteGroup = async (groupId: string) => {
+  try {
+    await db.delete(groups).where(eq(groups.id, groupId));
+    return true;
+  } catch (error) {
+    return false;
+  }
 };
