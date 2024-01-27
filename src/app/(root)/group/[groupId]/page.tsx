@@ -32,7 +32,7 @@ export default async function page({ params: { groupId } }: Props) {
         <TabsContent value="expenses">
           {expensesInGroup.map((expense) => (
             <div key={expense.id}>
-              <h1 className="bg-blue-400">{expense.name}</h1>
+              <h1>{expense.name}</h1>
               {expense.users?.map((user) => {
                 return (
                   <p key={user.id}>

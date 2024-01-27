@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import DeleteGroup from "./DeleteGroup";
+import EditGroup from "./EditGroup";
 
 interface GroupOptionsProps {
   groupId: string;
@@ -32,6 +33,12 @@ export default function GroupOptions({ groupId }: GroupOptionsProps) {
         showDeleteModal={showDeleteModal}
       />
 
+      <EditGroup
+        groupId={groupId}
+        setShowEditModal={setShowEditModal}
+        showEditModal={showEditModal}
+      />
+
       <DropdownMenu>
         <DropdownMenuTrigger className="absolute top-4 right-4" asChild>
           <div className="p-1 rounded-md hover:bg-muted-foreground/10 cursor-pointer">
@@ -46,11 +53,9 @@ export default function GroupOptions({ groupId }: GroupOptionsProps) {
               <Landmark className="w-4 h-4 mr-2" />
               <span>Add members</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link className="flex" href={`/group/${groupId}/edit`}>
-                <PencilRuler className="w-4 h-4 mr-2" />
-                <span>Edit group</span>
-              </Link>
+            <DropdownMenuItem onClick={() => setShowEditModal(true)}>
+              <PencilRuler className="w-4 h-4 mr-2" />
+              <span>Edit group</span>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => setShowDeleteModal(true)}>
               <Trash2 className="w-4 h-4 mr-2" />
