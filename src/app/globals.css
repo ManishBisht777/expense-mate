@@ -57,3 +57,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+.bg-grid {
+  background-image: url("/assets/grid.svg");
+  background-size: cover;
+}

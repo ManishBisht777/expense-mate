@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getGroupById, getGroupExpense } from "@/lib/actions/group";
 import SettleExpense from "../../splits/components/SettleExpense";
+import Link from "next/link";
 
 interface Props {
   params: { groupId: string };
@@ -32,7 +33,7 @@ export default async function page({ params: { groupId } }: Props) {
         <TabsContent value="expenses">
           {expensesInGroup.map((expense) => (
             <div key={expense.id}>
-              <h1>{expense.name}</h1>
+              <Link href={`/expense/${expense.id}`}>{expense.name}</Link>
               {expense.users?.map((user) => {
                 return (
                   <p key={user.id}>
