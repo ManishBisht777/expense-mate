@@ -158,16 +158,16 @@ export default async function marketingLayout() {
           </div>
         </div>
 
-        <div className="bg-grid flex flex-col justify-center items-center space-y-3">
-          <p className="text-lg font-medium bg-white rounded-full px-6 py-1 border shadow-sm">
+        <div className="bg-grid-3 flex flex-col justify-center items-center space-y-3 ">
+          <p className="text-lg font-medium bg-white rounded-full px-6 py-1 border shadow-sm mt-10">
             Features
           </p>
           <h2 className="text-3xl font-semibold">
             Don&apos;t miss out on the latest features
           </h2>
 
-          <div>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-10 mt-6">
+            <div className="grid grid-cols-2 gap-10">
               <div className="space-y-3">
                 <div className="bg-purple-100 w-10 h-10 rounded-full flex justify-center items-center">
                   <BarChart3 className="text-purple-600" size={20} />
@@ -196,6 +196,36 @@ export default async function marketingLayout() {
                 </div>
               </div>
               <div className="h-60 bg-slate-50 rounded"></div>
+            </div>
+            <div className="grid grid-cols-2 gap-10">
+              <div className="h-60 bg-slate-50 rounded"></div>
+              <div className="space-y-3">
+                <div className="bg-purple-100 w-10 h-10 rounded-full flex justify-center items-center">
+                  <BarChart3 className="text-purple-600" size={20} />
+                </div>
+                <p className="text-purple-700 text-sm">
+                  Lorem ipsum dolor sit amet.
+                </p>
+                <p className="uppercase font-semibold text-xl">
+                  Your sales are well organised
+                </p>
+                <p className="max-w-md text-sm">
+                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+                  Aperiam necessitatibus ad enim architecto non, repellendus
+                  quae vero ratione amet alias maxime error velit.
+                </p>
+
+                <div className="flex gap-2">
+                  <Button variant="secondary" className="rounded-full">
+                    <span>Sales tracking</span>
+                    <Check className="ml-2" size={20} />
+                  </Button>
+                  <Button variant="secondary" className="rounded-full">
+                    <span>Charts</span>
+                    <Check className="ml-2" size={20} />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
