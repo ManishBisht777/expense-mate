@@ -95,6 +95,13 @@ export const getGroupById = async (groupId: string) => {
   return group[0] || null;
 };
 
+interface UserDetailsInsideGroup {
+  email: string;
+  name: string;
+  id: string;
+  settled: boolean;
+}
+
 export const getGroupExpense = async (groupId: string) => {
   const groupExpense = await db
     .select({
@@ -106,7 +113,7 @@ export const getGroupExpense = async (groupId: string) => {
       groupId: expenses.groupId,
       createdBy: expenses.createdBy,
       splitType: expenses.splitType,
-      users: sql`(
+      users: sql<UserDetailsInsideGroup[]>`(
         SELECT json_agg(user_details)
         FROM (
           SELECT ${users.email}, ${users.name}, ${userToExpense.settled} , ${users.id}
