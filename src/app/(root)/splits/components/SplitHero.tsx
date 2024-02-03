@@ -16,14 +16,14 @@ export default function SplitHero({}: Props) {
             <Sparkles className="w-5 h-5" /> consectetur.
           </p>
         </div>
-        <div className="mt-6 bg-black text-white px-6 pt-16 pb-6 rounded-lg relative flex items-center justify-between">
+        <div className="mt-6 bg-black text-white px-6 py-8 rounded-lg relative flex items-center justify-between">
           <div>
             <h3 className="text-xl font-medium">Liked the projects?</h3>
             <p className="text-xs text-white/80">
               Drop a star on github if you liked this project
             </p>
           </div>
-          <Button variant="ghost" className="mt-4 px-8 flex items-center">
+          <Button variant="ghost" className="px-8 flex items-center">
             <Star size={20} className="mr-2" /> Star
           </Button>
         </div>
