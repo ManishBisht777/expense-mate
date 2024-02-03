@@ -15,4 +15,18 @@ export const marketingConfig: MarketingConfig = {
       href: "/#contact",
     },
   ],
+  dashboardNav: [
+    {
+      title: "Dashboard",
+      href: "/dashboard",
+    },
+    {
+      title: "Splits",
+      href: "/splits",
+    },
+    {
+      title: "Settings",
+      href: "/settings",
+    },
+  ],
 };

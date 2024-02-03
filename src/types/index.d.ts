@@ -8,4 +8,5 @@ interface NavItem {
 
 interface MarketingConfig {
   mainNav: NavItem[];
+  dashboardNav: NavItem[];
 }

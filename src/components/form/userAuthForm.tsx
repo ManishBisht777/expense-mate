@@ -11,6 +11,7 @@ import z from "zod";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
 import { Icons } from "../ui/Icons";
+import { useRouter } from "next/navigation";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -20,7 +21,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
   const [isGoogleLoading, setIsGoogleLoading] = React.useState<boolean>(false);
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -88,7 +89,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         className={cn(buttonVariants({ variant: "outline" }))}
         onClick={() => {
           setIsGitHubLoading(true);
-          signIn("github");
+          signIn("github").then(() => router.push("/spilts"));
         }}
         disabled={isLoading || isGitHubLoading}
       >

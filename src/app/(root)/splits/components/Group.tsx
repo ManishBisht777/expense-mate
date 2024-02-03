@@ -6,9 +6,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { db } from "@/db";
-import { groups, users, usersToGroups } from "@/db/schema";
-import { eq, sql } from "drizzle-orm";
 import { Session } from "next-auth";
 import Link from "next/link";
 import AddExpense from "./AddExpense";
@@ -30,12 +27,8 @@ interface GroupProps {
 }
 
 export default async function Group({ group, session }: GroupProps) {
-  // const members = await getGroupMembers(group.id);
-
-  // console.log(members);
-
   return (
-    <Card className="col-span-1 relative">
+    <Card className="col-span-1 relative bg-grid-3">
       <CardHeader>
         <Link className="cursor-pointer" href={`/group/${group.id}`}>
           <CardTitle className="text-lg capitalize">{group.name}</CardTitle>

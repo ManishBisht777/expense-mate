@@ -38,7 +38,7 @@ export default async function marketingLayout() {
             ) : (
               <Link
                 href="/login"
-                className={cn(buttonVariants({ size: "sm" }), "px-4")}
+                className={cn(buttonVariants({ size: "sm" }), "px-6")}
               >
                 Login
               </Link>
@@ -58,8 +58,12 @@ export default async function marketingLayout() {
             </p>
             <div>
               <div className="flex gap-2 max-w-md justify-center">
-                <Input />
-                <Button>Explore Now</Button>
+                <Button variant="secondary" className="px-6">
+                  Github
+                </Button>
+                <Button variant="accent" className="">
+                  Explore Now
+                </Button>
               </div>
               <p className="mt-3 flex gap-1 items-center text-muted-foreground">
                 Lorem ipsum dolor sit amet
