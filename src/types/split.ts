@@ -26,3 +26,18 @@ export const createGroupExpenseSchema = z.object({
     })
   ),
 });
+
+export interface UserDetailsInsideGroup {
+  email: string;
+  name: string;
+  id: string;
+  settled: boolean;
+}
+
+export type UserInGroupExpense = {
+  id: string;
+  name: string;
+  email: string;
+  amount: number;
+  settled: boolean;
+};

@@ -9,6 +9,7 @@ import {
   usersToGroups,
 } from "@/db/schema";
 import { authOptions } from "@/lib/auth";
+import { UserDetailsInsideGroup } from "@/types/split";
 import { eq, sql } from "drizzle-orm";
 import { getServerSession } from "next-auth";
 
@@ -94,13 +95,6 @@ export const getGroupById = async (groupId: string) => {
 
   return group[0] || null;
 };
-
-interface UserDetailsInsideGroup {
-  email: string;
-  name: string;
-  id: string;
-  settled: boolean;
-}
 
 export const getGroupExpense = async (groupId: string) => {
   const groupExpense = await db

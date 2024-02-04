@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
 import {
   Select,
   SelectContent,
@@ -9,9 +11,7 @@ import {
 } from "@/components/ui/select";
 import { getGroupById, getGroupExpense } from "@/lib/actions/group";
 import { IndianRupee, MoveUpRight, Plus } from "lucide-react";
-import Link from "next/link";
-import SettleExpense from "../../splits/components/SettleExpense";
-import { Button } from "@/components/ui/button";
+import { columns } from "./components/column";
 
 interface Props {
   params: { groupId: string };
@@ -106,29 +106,7 @@ export default async function page({ params: { groupId } }: Props) {
         </Button>
       </div>
 
-      {/* <pre>
-        <code>{JSON.stringify(expensesInGroup, null, 2)}</code>
-      </pre> */}
-
-      <div>
-        {expensesInGroup.map((expense) => (
-          <div key={expense.id}>
-            <Link href={`/expense/${expense.id}`}>{expense.name}</Link>
-            {expense.users?.map((user) => {
-              return (
-                <p key={user.id}>
-                  {user.name}
-                  <SettleExpense
-                    userId={user.id}
-                    expenseId={expense.id}
-                    isSettled={user.settled}
-                  />
-                </p>
-              );
-            })}
-          </div>
-        ))}
-      </div>
+      <DataTable columns={columns} data={expensesInGroup} />
     </div>
   );
 }
